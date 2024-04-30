@@ -105,6 +105,9 @@ class Interpreter:
         if showing:
             tk.mainloop()
 
+    def generate_vanishing_point():
+        pass
+
     def go_to_last_position(self) -> None:
         self.t.penup()
         self.t.goto(tuple(self.position_queue.pop()))
