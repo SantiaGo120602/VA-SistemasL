@@ -29,8 +29,7 @@ class Interpreter:
         self.t.hideturtle()
         self.t._tracer(0)
         self.t.width(2)
-
-        self.posible_positions: list[tuple[int]] = [(x, y) for x in range(-(screen_width//2) + 200, (screen_width//2) - 200, 300) for y in range(-(screen_length//2) + 200, (screen_length//2) - 200, 300)]
+        self.posible_positions: list[tuple[int]] = [(x, y) for x in range(-(screen_width//2) + 200, (screen_width//2) - 200, 200) for y in range(-(screen_length//2) + 200, (screen_length//2) - 200, 400)]
         self.position_queue: list[turtle.Vec2D] = []
         self.move_dict = {"F": self.t.forward, "G": self.t.forward}
         self.rotate_dict = {"-": self.t.left, "+": self.t.right}
@@ -74,8 +73,13 @@ class Interpreter:
             colors: tuple[tuple[int]] = None,
             showing: bool = True,
             random_positions: bool = False) -> None:
-        in_x, in_y = tuple(self.t.pos())
+        if not random_positions:
+            in_x, in_y = tuple(self.t.pos())
         for i, (c, d, s) in enumerate(zip(cadenas, deltas, sizes)):
+            if random_positions:
+                in_x, in_y = self.posible_positions.pop(randrange(len(self.posible_positions)))
+            else:
+                in_x+=300
             self.t.color(colors[i])
             self.t.penup()
             self.t.goto(in_x, in_y)
@@ -84,10 +88,7 @@ class Interpreter:
                 self.execute_with_random(c, d, s, False)
             else:
                 self.execute(c, d, s, False)
-            if random_positions:
-                in_x, in_y = self.posible_positions.pop(randrange(len(self.posible_positions)))
-            else:
-                in_x+=300
+            
             self.t.setheading(90)
         if showing:
             tk.mainloop()
@@ -97,10 +98,10 @@ class Interpreter:
             sizes: list[float], randomness: bool = True,
             colors: tuple[tuple[int]] = None,
             showing: bool = True,
-            iterations: int = 4) -> None:
+            iterations: int = 5) -> None:
         self.screen.bgcolor((152, 251, 152))
         for _ in range(iterations):
-            self.execute_multiple(cadenas, deltas, sizes, colors=colors, showing=False, random_positions = True)
+            self.execute_multiple(cadenas, deltas, sizes, colors=colors, showing=False, random_positions = True, randomness=randomness)
         if showing:
             tk.mainloop()
 
