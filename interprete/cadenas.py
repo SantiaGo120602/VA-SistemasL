@@ -12,6 +12,12 @@ def apply_rules(
     for character in axiom:
         if character in production_rules:
             new_axiom += production_rules[character]
+            if iterations == 1:
+                random_add = randint(1, 200)
+                if (random_add < 40):
+                    new_axiom += "P"
+                if (random_add > 180):
+                    new_axiom += "FFFF"
         else:
            new_axiom += character
     return apply_rules(new_axiom, production_rules, iterations-1)
@@ -19,7 +25,7 @@ def apply_rules(
 class Interpreter:
     def __init__(self, screen_width: int = 9000, screen_length: int = 9000) -> None:
         self.root = tk.Tk()
-        self.root.geometry('500x500-5+40')
+        #self.root.geometry('500x500-5+40')
         self.cv = turtle.ScrolledCanvas(self.root, width=1900, height=900)
         self.cv.pack()
         self.screen = turtle.TurtleScreen(self.cv)
@@ -56,8 +62,13 @@ class Interpreter:
     def execute(
                 self, cadena: str,
                 delta: float, size: float,
-                showing: bool = True) -> None:
+                showing: bool = True,
+                forest_color: bool = False) -> None:
         for c in cadena:
+            if c == "P":
+                self.t.color(255,222,171)
+                self.t.circle(2)
+                self.t.color(203,222,126)
             if c in self.move_dict:
                 self.move_dict[c](size)
             elif c in self.rotate_dict:
