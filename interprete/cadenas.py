@@ -66,8 +66,11 @@ class Interpreter:
                 forest_color: bool = False) -> None:
         for c in cadena:
             if c == "P":
-                self.t.color(255,222,171)
-                self.t.circle(2)
+                self.t.color(246,40,25)
+                self.t.fillcolor(246,40,25)
+                self.t.begin_fill() 
+                self.t.circle(3)
+                self.t.end_fill()
                 self.t.color(203,222,126)
             if c in self.move_dict:
                 self.move_dict[c](size)
